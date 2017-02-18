@@ -836,6 +836,12 @@ finishedRefreshWithFetcher:(GTMOAuth2Fetcher *)fetcher
     fetcher = [GTMOAuth2Fetcher fetcherWithRequest:request];
   }
 
+    if(![fetcher isKindOfClass:[GTMSessionFetcher class]]) {
+        // cannot handle non-GTMSessionFetcher fetchers
+        // this glue code only works for GTMSessionFetcher
+        // bodyData is not a part of GTMHTTPFetcher protocol
+        return nil;
+    }
 #if !STRIP_GTM_FETCH_LOGGING
   // The user email address is known at token refresh time, not during the initial code exchange.
   NSString *userEmail = [self userEmail];
